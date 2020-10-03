@@ -28,10 +28,20 @@ function processFirstItem(stringList, callback) {
  * 
  * 1. What is the difference between counter1 and counter2?
  * 
+ * Counter1 is a function that declares the count variable within itself and then returns the result of the
+ * nested function counter(), which references count from the original function and adds 1. Counter2 references the global
+ * variable count and then returns count plus one. The difference is where the variable count is referenced and how they excute
+ * the calculation.
+ * 
  * 2. Which of the two uses a closure? How can you tell?
+ * 
+ * They both are using closure, because both functions are accessing variables outside of their scope.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
  *
+ * If you did not need to store the count variable globally or needed to conserve memory, use counter1.
+ * If you wanted to counter to be persistant and public use counter2.
+ * 
 */
 
 // counter1 code
@@ -56,11 +66,11 @@ function counter2() {
 
 Write a function called `inning` that returns a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning(){
+    return Math.floor(Math.random() * Math.floor(3));
 }
+
+console.log(inning())
 
 /* Task 3: finalScore()
 
@@ -76,11 +86,18 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(inning, numberOfInnings){
+  let score = {"Home" : 0, "Away": 0}
+  let count = 0;
+  while(numberOfInnings > 0){
+    score.Home = score.Home + inning();
+    score.Away = score.Away + inning();
+    numberOfInnings--;
+  }
+  return score;
 }
+
+console.log(finalScore(inning, 9))
 
 /* Task 4: 
 
@@ -103,8 +120,38 @@ and returns the score at each pont in the game, like so:
 Final Score: awayTeam - homeTeam */
 
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+
+
+function scoreboard(inning, numberOfInnings) {
+  let homeScore = 0;
+  let awayScore = 0;
+  let count = 0;
+  let th = "";
+  
+  function getInningScore(inning, home, away){
+    homeScore = home + inning();
+    awayScore = away + inning();
+  }
+  while(numberOfInnings > 0){
+    getInningScore(inning, homeScore, awayScore)
+    count++;
+    if(count == 1){
+      th = "1st";
+    }
+    else if(count == 2){
+      th = "2nd";
+    }
+    else if(count == 3){
+      th = "3rd";
+    }
+    else{
+      th = count + "th";
+    }
+    console.log(th + " inning: " + awayScore + " - " + homeScore);
+    numberOfInnings--;
+  }
+  console.log("Final Score: " + awayScore + " - " + homeScore);
 }
 
+scoreboard(inning, 9)
 
